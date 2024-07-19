@@ -4,6 +4,10 @@ use File::Glob qw( bsd_glob );
 use File::Which qw( which );
 use List::Util qw( all );
 
+use feature qw(say);
+use strict;
+use warnings;
+
 #  no share install unless on windows
 delete $ENV{ALIEN_INSTALL_TYPE}
   if $^O ne 'MSWin32' && $^O ne 'cygwin';
@@ -51,15 +55,20 @@ sub msys_is_okay
 probe sub {
   my($build) = @_;
 
+    say "xxx1: $^O";
   if($^O eq 'MSWin32' || $ENV{PERL_ALIEN_MSYS_FAUX})
   {
+    say "xxx2";
     return 'share'
       if defined $ENV{ALIEN_MSYS_INSTALL_TYPE} && $ENV{ALIEN_MSYS_INSTALL_TYPE} eq 'share';
 
+    say "xxx3";
     if(defined $ENV{PERL_ALIEN_MSYS_BIN})
     {
+        say "xxx4";
       if(msys_is_okay($ENV{PERL_ALIEN_MSYS_BIN}))
       {
+        say "xxx5";
         $build->runtime_prop->{my_type} = 'PERL_ALIEN_MSYS_BIN';
         $build->runtime_prop->{my_bin} = path($ENV{PERL_ALIEN_MSYS_BIN})->stringify;
         return 'system';
