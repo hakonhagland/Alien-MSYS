@@ -46,6 +46,11 @@ my @exes_to_check = qw( sh.exe perl.exe m4.exe mktemp.exe readlink.exe );
 sub msys_is_okay
 {
   my($dir) = @_;
+  for my $exe (@exes_to_check) {
+    if (! -x path($dir)->child($exe)) {
+      say "xxx6: $exe not found in $dir";
+    }
+  }
      -d path($dir)
   && (
     all { -x path($dir)->child($_ ) } @exes_to_check
